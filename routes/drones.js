@@ -60,22 +60,26 @@ router.post('/drones/:id/edit', (req, res, next) => {
     const name = req.body.name;
     const propellers = req.body.propellers;
     const maxSpeed = req.body.maxSpeed;
-    Drone.findByIdAndUpdate({
-      name: name,
-      propellers: propellers,
-      maxSpeed: maxSpeed
-    })
-    .then(() => {
-      res.redirect("/drones")
-    })
-    .catch(() => {
-      res.redirect("/drones/create");
-    });
+    Drone
+      .findByIdAndUpdate({ id: req.params._id })
+      .then(() => {
+        res.redirect("/drones")
+      })
+      .catch(() => {
+       res.redirect("/drones/create");
+      });
 });
 
 router.post('/drones/:id/delete', (req, res, next) => {
   // Iteration #5: Delete the drone
-  // ... your code here
+  Drone
+    .findByIdAndDelete({ id: req.params._id })
+    .then(() => {
+      res.redirect("/drones")
+    })
+    .catch(() => {
+      res.redirect("/drones/:id/delete")
+    })
 });
 
 module.exports = router;
